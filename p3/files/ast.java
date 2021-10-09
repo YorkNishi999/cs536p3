@@ -213,80 +213,75 @@ abstract class DeclNode extends ASTnode {
 }
 
 class VarDeclNode extends DeclNode {
-  public VarDeclNode(TypeNode type, IdNode id, int size) {
-      myType = type;
-      myId = id;
-      mySize = size;
-  }
+    public VarDeclNode(TypeNode type, IdNode id, int size) {
+        myType = type;
+        myId = id;
+        mySize = size;
+    }
 
-  public void unparse(PrintWriter p, int indent) {
-      addIndent(p, indent);
-      myType.unparse(p, 0);
-      p.print(" ");
-      myId.unparse(p, 0);
-      p.println(";");
-  }
+    public void unparse(PrintWriter p, int indent) {
+        addIndent(p, indent);
+        myType.unparse(p, 0);
+        p.print(" ");
+        myId.unparse(p, 0);
+        p.println(";");
+    }
 
-  // 3 kids
-  private TypeNode myType;
-  private IdNode myId;
-  private int mySize;  // use value NOT_STRUCT if this is not a struct type
+    // 3 kids
+    private TypeNode myType;
+    private IdNode myId;
+    private int mySize;  // use value NOT_STRUCT if this is not a struct type
 
-  public static int NOT_STRUCT = -1;
+    public static int NOT_STRUCT = -1;
 }
 
 class FnDeclNode extends DeclNode {
-  public FnDeclNode(TypeNode type,
-                    IdNode id,
-                    FormalsListNode formalList,
-                    FnBodyNode body) {
-      myType = type;
-      myId = id;
-      myFormalsList = formalList;
-      myBody = body;
-  }
+    public FnDeclNode(TypeNode type,
+                      IdNode id,
+                      FormalsListNode formalList,
+                      FnBodyNode body) {
+        myType = type;
+        myId = id;
+        myFormalsList = formalList;
+        myBody = body;
+    }
 
-  public void unparse(PrintWriter p, int indent) {
-  }
+    public void unparse(PrintWriter p, int indent) {
+    }
 
-  // 4 kids
-  private TypeNode myType;
-  private IdNode myId;
-  private FormalsListNode myFormalsList;
-  private FnBodyNode myBody;
+    // 4 kids
+    private TypeNode myType;
+    private IdNode myId;
+    private FormalsListNode myFormalsList;
+    private FnBodyNode myBody;
 }
 
 class FormalDeclNode extends DeclNode {
-  public FormalDeclNode(TypeNode type, IdNode id) {
-      myType = type;
-      myId = id;
-  }
+    public FormalDeclNode(TypeNode type, IdNode id) {
+        myType = type;
+        myId = id;
+    }
 
-  public void unparse(PrintWriter p, int indent) {
-  }
+    public void unparse(PrintWriter p, int indent) {
+    }
 
-  // 2 kids
-  private TypeNode myType;
-  private IdNode myId;
+    // 2 kids
+    private TypeNode myType;
+    private IdNode myId;
 }
 
 class StructDeclNode extends DeclNode {
-  public StructDeclNode(IdNode id, DeclListNode declList) {
-      myId = id;
-      myDeclList = declList;
-  }
+    public StructDeclNode(IdNode id, DeclListNode declList) {
+        myId = id;
+		myDeclList = declList;
+    }
 
-  public void unparse(PrintWriter p, int indent) {
-      p.print("struct");
-      myId.unparse(p, indent);
-      p.println("\t{");
-      myDeclList.unparse(p, indent);
-      p.println("\t};");
-  }
+    public void unparse(PrintWriter p, int indent) {
+    }
 
-  // 2 kids
-  private IdNode myId;
-private DeclListNode myDeclList;
+    // 2 kids
+    private IdNode myId;
+	private DeclListNode myDeclList;
 }
 
 // **********************************************************************
@@ -310,7 +305,6 @@ class BoolNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("bool");
     }
 }
 
@@ -319,7 +313,6 @@ class VoidNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("void");
     }
 }
 
@@ -329,8 +322,6 @@ class StructNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("struct ");
-        myId.unparse(p, indent);
     }
 	
 	// 1 kid
@@ -542,7 +533,6 @@ class TrueNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("tru");
     }
 
     private int myLineNum;
@@ -556,7 +546,6 @@ class FalseNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("fls");
     }
 
     private int myLineNum;

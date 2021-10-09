@@ -2,4 +2,5 @@ int x;
 int y;
 bool z;
 void ivoid;
-tru
+bool z = tru;
+bool z = fls;
