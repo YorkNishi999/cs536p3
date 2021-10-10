@@ -15,7 +15,7 @@ P3.class: P3.java parser.class Yylex.class ASTnode.class
 	$(JC) $(FLAGS) -cp $(CP) P3.java
 
 parser.class: parser.java ASTnode.class Yylex.class ErrMsg.class
-	$(JC) $(FLAGS) -Xlint:deprecation -cp $(CP) parser.java
+	$(JC) $(FLAGS) -cp $(CP) parser.java
 
 parser.java: b.cup
 	java -cp $(CP) java_cup.Main < b.cup

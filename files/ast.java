@@ -161,6 +161,12 @@ class FormalsListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        for (int i = 0; i < myFormals.size(); i++){
+            myFormals[i].unparse(p, indent);
+            if(i != myFormals.size()){
+                p.print(", ");
+            }
+        }
     }
 
     // list of kids (FormalDeclNodes)
@@ -174,6 +180,10 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.println("{");
+        myDeclList.unparse(p, indent + 2);
+        myStmtList.unparse(p, indent + 2);
+        p.println("}");
     }
 
     // 2 kids
@@ -247,6 +257,13 @@ class FnDeclNode extends DeclNode {
   }
 
   public void unparse(PrintWriter p, int indent) {
+      myType.unparse(p, indent); // type that the func returns
+      p.print(" ");
+      myId.unparse(p, indent); // ident that the fnc returns
+      p.print("(");
+      myFormalsList.unparse(p, indent);
+      p.print(")");
+      myBody.unparse(p,indent);
   }
 
   // 4 kids
@@ -263,6 +280,9 @@ class FormalDeclNode extends DeclNode {
   }
 
   public void unparse(PrintWriter p, int indent) {
+      myType.unparse(p, indent);
+      p.print(", ");
+      myId.unparse(p,indent);
   }
 
   // 2 kids
@@ -688,6 +708,11 @@ class MinusNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("(");
+        myExp1.unparse(p, indent);
+        p.print("-");
+        myExp2.unparse(p, indent);
+        p.print(")");
     }
 }
 

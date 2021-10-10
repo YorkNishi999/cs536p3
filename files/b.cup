@@ -77,8 +77,14 @@ non terminal ProgramNode      program;
 non terminal LinkedList       declList;
 non terminal DeclNode         decl;
 non terminal VarDeclNode      varDecl;
+non terminal FnDeclNode       fnDecl;
+non terminal FormalsListNode  formals;
+non terminal LinkedList       formalsList;
+non terminal FormalDeclNode   formalDecl;
+non terminal FnBodyNode       fnBody;
 non terminal StructDeclNode   structDecl;
 non terminal LinkedList       structBody;
+non terminal ExpNode          exp;
 non terminal ExpNode          term;
 non terminal TypeNode         type;
 non terminal IdNode           id;
@@ -86,6 +92,7 @@ non terminal IdNode           id;
  
 /* NOTE: Add precedence and associativity declarations here */
 
+precedence left MINUS;
 
 start with program;
 
@@ -122,6 +129,12 @@ varDecl         ::= type:t id:i SEMICOLON
                 :}
                 ;
 
+fnDecl          ::= type:t id:i formals:f fnBody:fb
+                {:
+                    RESULT = new FnDeclNode(t, i, f, fb);
+                :}
+                ;
+
 structDecl      ::= STRUCT id:i LCURLY structBody:d RCURLY
                 {:
                   RESULT = new StructDeclNode(i, new DeclListNode(d));
@@ -140,6 +153,51 @@ structBody      ::= structBody:sb varDecl:vd
                 :}
                 ;
 
+formals         ::= LPAREN RPAREN
+                {:
+                  RESULT = new FormalsListNode(new LinkedList<>());
+                :}
+                | LPAREN formalsList:fl RPAREN
+                {:
+                  RESULT = new FormalsListNode(fl);
+                :}
+                ;
+
+formalsList     ::= formalDecl:fd  // no argument
+                {:
+                  LinkedList<FormalDeclNode> ll = new LinkedList<>();
+                  ll.addLast(fd);
+                  RESULT = ll;
+                :}
+                | formalDecl:fb COMMA formalsList:fl // argument
+                {:
+                  fl.addLast(fb);
+                  RESULT = fl;
+                :}
+                ;
+
+formalDecl      ::= type:t id:i        // note: no struct parameters
+                {:
+                  RESULT = new FormalDeclNode(t, i);
+                :}
+                ;
+
+fnBody          ::= LCURLY varDeclList:vd stmtList:sl RCURLY
+                {:
+                  RESULT = new FnBodyNode(new DeclListNode(vd), new StmtListNode(sl));
+                :}
+                ;
+
+exp             ::= exp:e1 MINUS exp:e2
+                {:
+                  RESULT = new MinusNode(e1, e2);
+                :}
+                | MINUS term:t
+                {:
+                  RESULT = new UnaryMinusNode(t); // term? not exp?
+                :}
+                ;
+
 term            ::= TRUE:i
                 {:
                   RESULT = new TrueNode(i.linenum, i.charnum);
@@ -148,7 +206,6 @@ term            ::= TRUE:i
                 {:
                   RESULT = new FalseNode(i.linenum, i.charnum);
                 :}
-
                 ;
 
 type            ::= INT
