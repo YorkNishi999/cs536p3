@@ -160,24 +160,15 @@ class FormalsListNode extends ASTnode {
         myFormals = S;
     }
 
-//    public void unparse(PrintWriter p, int indent) {
-//        for (int i = 0; i < myFormals.size(); i++){
-//            myFormals.get(i).unparse(p, indent);
-//            if(i != myFormals.size()){
-//                p.print(", ");
-//            }
-//        }
-//    }
-
-
-     public void unparse(PrintWriter p, int indent) {
-        boolean first = true;
-        for (FormalDeclNode n : myFormals) {
-            if (first)
-                first = false;
-            else
+    public void unparse(PrintWriter p, int indent) {
+        boolean flag = true;
+        for (FormalDeclNode f: myFormals) {
+            if (flag) {
+                flag = false;
+            } else {
                 p.print(", ");
-            n.unparse(p, indent);
+            }
+            f.unparse(p, indent);
         }
     }
 
@@ -193,8 +184,8 @@ class FnBodyNode extends ASTnode {
 
     public void unparse(PrintWriter p, int indent) {
         p.println(" {");
-        myDeclList.unparse(p, indent + 2);
-        myStmtList.unparse(p, indent + 2);
+        myDeclList.unparse(p, indent + 4);
+        myStmtList.unparse(p, indent + 4);
         p.println("}");
     }
 
@@ -307,7 +298,7 @@ class FormalDeclNode extends DeclNode {
 
   public void unparse(PrintWriter p, int indent) {
       myType.unparse(p, indent);
-      p.print(", ");
+      p.print(" ");
       myId.unparse(p,indent);
   }
 
@@ -326,7 +317,7 @@ class StructDeclNode extends DeclNode {
       p.print("struct ");
       myId.unparse(p, indent);
       p.println("\t{");
-      myDeclList.unparse(p, indent + 2);
+      myDeclList.unparse(p, indent + 4);
       p.println("\t};");
   }
 

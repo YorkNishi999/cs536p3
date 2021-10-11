@@ -13,3 +13,8 @@ void func () {
     int x;
     int y;
 }
+bool func (bool y, int z) {
+    int b;
+    int x;
+    int y;
+}
