@@ -160,12 +160,24 @@ class FormalsListNode extends ASTnode {
         myFormals = S;
     }
 
-    public void unparse(PrintWriter p, int indent) {
-        for (int i = 0; i < myFormals.size(); i++){
-            myFormals[i].unparse(p, indent);
-            if(i != myFormals.size()){
+//    public void unparse(PrintWriter p, int indent) {
+//        for (int i = 0; i < myFormals.size(); i++){
+//            myFormals.get(i).unparse(p, indent);
+//            if(i != myFormals.size()){
+//                p.print(", ");
+//            }
+//        }
+//    }
+
+
+     public void unparse(PrintWriter p, int indent) {
+        boolean first = true;
+        for (FormalDeclNode n : myFormals) {
+            if (first)
+                first = false;
+            else
                 p.print(", ");
-            }
+            n.unparse(p, indent);
         }
     }
 
@@ -297,10 +309,10 @@ class StructDeclNode extends DeclNode {
   }
 
   public void unparse(PrintWriter p, int indent) {
-      p.print("struct");
+      p.print("struct ");
       myId.unparse(p, indent);
       p.println("\t{");
-      myDeclList.unparse(p, indent);
+      myDeclList.unparse(p, indent + 2);
       p.println("\t};");
   }
 
@@ -370,6 +382,8 @@ class AssignStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myAssign.unparse(p, indent);
+        p.println(";");
     }
 
     // 1 kid
@@ -606,6 +620,11 @@ class DotAccessExpNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print(")");
+        myLoc.unparse(p, indent);
+        p.print(".");
+        myId.unparse(p, indent);
+        p.print(")");
     }
 
     // 2 kids
@@ -620,6 +639,9 @@ class AssignNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        myLhs.unparse(p, indent);
+        p.print(" = ");
+        myExp.unparse(p, indent);
     }
 
     // 2 kids

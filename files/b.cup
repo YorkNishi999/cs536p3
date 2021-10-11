@@ -76,22 +76,28 @@ terminal                ASSIGN;
 non terminal ProgramNode      program;
 non terminal LinkedList       declList;
 non terminal DeclNode         decl;
+non terminal LinkedList       varDeclList;
 non terminal VarDeclNode      varDecl;
 non terminal FnDeclNode       fnDecl;
+non terminal StructDeclNode   structDecl;
+non terminal LinkedList       structBody;
 non terminal FormalsListNode  formals;
 non terminal LinkedList       formalsList;
 non terminal FormalDeclNode   formalDecl;
 non terminal FnBodyNode       fnBody;
-non terminal StructDeclNode   structDecl;
-non terminal LinkedList       structBody;
+non terminal LinkedList       stmtList;
+non terminal AssignStmtNode   stmt;
+non terminal AssignNode       assignExp;
 non terminal ExpNode          exp;
 non terminal ExpNode          term;
 non terminal TypeNode         type;
+non terminal ExpNode          loc;
 non terminal IdNode           id;
  
  
 /* NOTE: Add precedence and associativity declarations here */
 
+precedence left ASSIGN;
 precedence left MINUS;
 
 start with program;
@@ -124,6 +130,17 @@ decl            ::= varDecl:v
                 :}// struct definitions only at top level
                 ;
 
+varDeclList     ::= varDeclList:vdl varDecl:vd
+                {:
+                  vdl.addLast(vd);
+                  RESULT = vdl;
+                :}
+                | /* epsilon */
+                {:
+                  RESULT = new LinkedList<DeclNode>();
+                :}
+                ;
+
 varDecl         ::= type:t id:i SEMICOLON
                 {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
                 :}
@@ -131,7 +148,7 @@ varDecl         ::= type:t id:i SEMICOLON
 
 fnDecl          ::= type:t id:i formals:f fnBody:fb
                 {:
-                    RESULT = new FnDeclNode(t, i, f, fb);
+                  RESULT = new FnDeclNode(t, i, f, fb);
                 :}
                 ;
 
@@ -188,13 +205,36 @@ fnBody          ::= LCURLY varDeclList:vd stmtList:sl RCURLY
                 :}
                 ;
 
+stmtList        ::= stmtList:sl stmt:s
+                {:
+                  sl.addLast(s);
+                  RESULT = sl;
+                :}
+                | /* epsilon */
+                {:
+                  RESULT = new LinkedList<StmtNode>();
+                :}
+                ;
+
+stmt            ::= assignExp:ae SEMICOLON
+                {:
+                  RESULT = new AssignStmtNode(ae);
+                :}
+                ;
+
+assignExp       ::= loc:l ASSIGN exp:e
+                {:
+                  RESULT = new AssignNode(l, e);
+                :}
+                ;
+
 exp             ::= exp:e1 MINUS exp:e2
                 {:
                   RESULT = new MinusNode(e1, e2);
                 :}
                 | MINUS term:t
                 {:
-                  RESULT = new UnaryMinusNode(t); // term? not exp?
+                  RESULT = new UnaryMinusNode(t);
                 :}
                 ;
 
@@ -219,6 +259,16 @@ type            ::= INT
                 |   VOID
                 {:
                   RESULT = new VoidNode();
+                :}
+                ;
+
+loc             ::= id:i
+                {:
+                  RESULT = i;
+                :}
+                | loc:l DOT id:i
+                {:
+                  RESULT = new DotAccessExpNode(l, i);
                 :}
                 ;
 
