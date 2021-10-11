@@ -1,11 +1,15 @@
 int x;
 int y;
-bool z;
-void ivoid;
-struct a {
-  int x;int y;
-  bool z;
-  void ivoid;
+struct struct_a sa1;
+struct struct_b {
+    int x;
 }
-int i( int x ) {
+struct struct_a {
+    int x;
+    struct struct_b y;
+}
+void func () {
+    int b;
+    int x;
+    int y;
 }

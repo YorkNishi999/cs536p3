@@ -86,15 +86,16 @@ non terminal LinkedList       formalsList;
 non terminal FormalDeclNode   formalDecl;
 non terminal FnBodyNode       fnBody;
 non terminal LinkedList       stmtList;
-non terminal AssignStmtNode   stmt;
+non terminal StmtNode         stmt;
 non terminal AssignNode       assignExp;
 non terminal ExpNode          exp;
 non terminal ExpNode          term;
+non terminal CallExpNode      fncall;
+non terminal LinkedList       actualList;
 non terminal TypeNode         type;
 non terminal ExpNode          loc;
 non terminal IdNode           id;
- 
- 
+
 /* NOTE: Add precedence and associativity declarations here */
 
 precedence left ASSIGN;
@@ -124,6 +125,10 @@ declList        ::= declList:dl decl:d
 decl            ::= varDecl:v
                 {: RESULT = v;
                 :}
+                | fnDecl:f
+                {:
+                  RESULT = f;
+                :}
                 | structDecl:sd
                 {:
                   RESULT = sd;
@@ -144,6 +149,10 @@ varDeclList     ::= varDeclList:vdl varDecl:vd
 varDecl         ::= type:t id:i SEMICOLON
                 {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
                 :}
+                | STRUCT id:i1 id:i2 SEMICOLON
+                {:
+                   RESULT = new VarDeclNode(new StructNode(i1), i2, 0);
+                :}
                 ;
 
 fnDecl          ::= type:t id:i formals:f fnBody:fb
@@ -163,14 +172,14 @@ structBody      ::= structBody:sb varDecl:vd
                   sb.addLast(vd);
                   RESULT = sb;
                 :}
-                |   varDecl:vd
+                | varDecl:vd
                 {:
                   RESULT = new LinkedList<>();
                   RESULT.addLast(vd);
                 :}
                 ;
 
-formals         ::= LPAREN RPAREN
+formals         ::= LPAREN RPAREN // no argment
                 {:
                   RESULT = new FormalsListNode(new LinkedList<>());
                 :}
@@ -180,13 +189,13 @@ formals         ::= LPAREN RPAREN
                 :}
                 ;
 
-formalsList     ::= formalDecl:fd  // no argument
+formalsList     ::= formalDecl:fd
                 {:
                   LinkedList<FormalDeclNode> ll = new LinkedList<>();
                   ll.addLast(fd);
                   RESULT = ll;
                 :}
-                | formalDecl:fb COMMA formalsList:fl // argument
+                | formalDecl:fb COMMA formalsList:fl 
                 {:
                   fl.addLast(fb);
                   RESULT = fl;
@@ -220,6 +229,10 @@ stmt            ::= assignExp:ae SEMICOLON
                 {:
                   RESULT = new AssignStmtNode(ae);
                 :}
+                | fncall:f SEMICOLON
+                {:
+                  RESULT = new CallStmtNode(f);
+                :}
                 ;
 
 assignExp       ::= loc:l ASSIGN exp:e
@@ -228,7 +241,11 @@ assignExp       ::= loc:l ASSIGN exp:e
                 :}
                 ;
 
-exp             ::= exp:e1 MINUS exp:e2
+exp             ::= assignExp:ae
+                {:
+                  RESULT = ae;
+                :}
+                | exp:e1 MINUS exp:e2
                 {:
                   RESULT = new MinusNode(e1, e2);
                 :}
@@ -236,15 +253,50 @@ exp             ::= exp:e1 MINUS exp:e2
                 {:
                   RESULT = new UnaryMinusNode(t);
                 :}
+                | term:t
+                {:
+                  RESULT = t;
+                :}
                 ;
 
-term            ::= TRUE:i
+term            ::= loc:l
+                {:
+                  RESULT = l;
+                :}
+                | TRUE:i
                 {:
                   RESULT = new TrueNode(i.linenum, i.charnum);
                 :}
                 | FALSE:i
                 {:
                   RESULT = new FalseNode(i.linenum, i.charnum);
+                :}
+                | fncall:f
+                {:
+                  RESULT = f;
+                :}
+                ;
+
+fncall          ::= id:i LPAREN RPAREN   // fn call with no args
+                {:
+                  RESULT = new CallExpNode(i);
+                :}
+                | id:i LPAREN actualList:al RPAREN  // with args
+                {:
+                  RESULT = new CallExpNode(i, new ExpListNode(al));
+                :}
+                ;
+
+actualList      ::= exp:e
+                {:
+                  LinkedList<ExpNode> l = new LinkedList<>();
+                  l.addLast(e);
+                  RESULT = l;
+                :}
+                | actualList:al COMMA exp:e
+                {:
+                  al.addLast(e);
+                  RESULT = al;
                 :}
                 ;
 

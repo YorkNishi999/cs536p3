@@ -192,7 +192,7 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.println("{");
+        p.println(" {");
         myDeclList.unparse(p, indent + 2);
         myStmtList.unparse(p, indent + 2);
         p.println("}");
@@ -209,6 +209,10 @@ class StmtListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        for (StmtNode stmt: myStmts) {
+            addIndent(p, indent);
+            stmt.unparse(p, indent);
+        }
     }
 
     // list of kids (StmtNodes)
@@ -221,6 +225,16 @@ class ExpListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        boolean flag = true;
+        for (ExpNode expNode: myExps) {
+            if (flag) {
+                flag = false;
+            }
+            else {
+                p.print(", ");
+            }
+            expNode.unparse(p, indent);
+        }
     }
 
     // list of kids (ExpNodes)
@@ -658,10 +672,18 @@ class CallExpNode extends ExpNode {
     public CallExpNode(IdNode name) {
         myId = name;
         myExpList = new ExpListNode(new LinkedList<ExpNode>());
+        System.out.println("CallExpNode");
     }
 
     // ** unparse **
     public void unparse(PrintWriter p, int indent) {
+        myId.unparse(p, indent);
+        p.print("(");
+        if (myExpList != null) {
+            myExpList.unparse(p, indent);
+        }
+        p.print(")");
+
     }
 
     // 2 kids
