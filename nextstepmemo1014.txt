@@ -1,0 +1,14 @@
+Warning : Terminal "PLUSPLUS" was declared but never used
+Warning : Terminal "REPEAT" was declared but never used
+Warning : Terminal "WRITE" was declared but never used
+Warning : Terminal "IF" was declared but never used
+Warning : Terminal "MINUSMINUS" was declared but never used
+Warning : Terminal "RETURN" was declared but never used
+Warning : Terminal "RECEIVE" was declared but never used
+Warning : Terminal "INTLITERAL" was declared but never used
+Warning : Terminal "ELSE" was declared but never used
+Warning : Terminal "READ" was declared but never used
+Warning : Terminal "WHILE" was declared but never used
+Warning : Terminal "STRINGLITERAL" was declared but never used
+Warning : Terminal "PRINT" was declared but never used
+
