@@ -18,3 +18,25 @@ bool func (bool y, int z) {
     int x;
     int y;
 }
+bool func (bool x, bool y) {
+    bool z;
+    z = x || y;
+    z = x && y;
+}
+bool func (int x, int y) {
+    bool z;
+    z = x > y;
+    z = x >= y;
+    z = x < y;
+    z = x <= y;
+    z = x == y;
+    z = x != y;
+    z = x + y;
+    z = x - y;
+    z = x * y;
+    z = x / y;
+    z = x + y * x / y;
+    z = !x;
+    z = !x + y;
+    z = !x / y - x;
+}
