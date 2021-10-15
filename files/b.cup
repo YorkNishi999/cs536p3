@@ -106,6 +106,7 @@ precedence nonassoc LESS, LESSEQ, GREATER, GREATEREQ, EQUALS, NOTEQUALS;
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
 precedence left NOT, MINUS;
+/* im not sure: precedence left PLUSPLUS, MINUSMINUS; */
 
 start with program;
 
@@ -235,6 +236,18 @@ stmt            ::= assignExp:ae SEMICOLON
                 {:
                   RESULT = new AssignStmtNode(ae);
                 :}
+                | PLUSPLUS loc:l SEMICOLON
+                {:
+                  RESULT = new PreIncStmtNode(l);
+                :}
+                | MINUSMINUS loc:l SEMICOLON
+                {:
+                  RESULT = new PreDecStmtNode(l);
+                :}
+                | IF exp:e LCURLY varDeclList:vdl stmtList:sl RCURLY
+                {:
+                  RESULT = new IfStmtNode(e, new DeclListNode(vdl), new StmtListNode(sl));
+                :}
                 | fncall:f SEMICOLON
                 {:
                   RESULT = new CallStmtNode(f);
@@ -317,13 +330,25 @@ term            ::= loc:l
                 {:
                   RESULT = l;
                 :}
-                | TRUE:i
+                | INTLITERAL:i
                 {:
-                  RESULT = new TrueNode(i.linenum, i.charnum);
+                  RESULT = new IntLitNode(i.linenum, i.charnum, i.intVal);
                 :}
-                | FALSE:i
+                | STRINGLITERAL:s
                 {:
-                  RESULT = new FalseNode(i.linenum, i.charnum);
+                  RESULT = new StringLitNode(s.linenum, s.charnum, s.strVal);
+                :}
+                | TRUE:t
+                {:
+                  RESULT = new TrueNode(t.linenum, t.charnum);
+                :}
+                | FALSE:f
+                {:
+                  RESULT = new FalseNode(f.linenum, f.charnum);
+                :}
+                | LPAREN exp:e RPAREN
+                {:
+                  RESULT = e;
                 :}
                 | fncall:f
                 {:

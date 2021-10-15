@@ -39,4 +39,12 @@ bool func (int x, int y) {
     z = !x;
     z = !x + y;
     z = !x / y - x;
+    ++x;
+    --x;
+    x = 151;
+    y = "string";
+    if (x == y) {
+        x = y;
+    }
 }
+
