@@ -46,5 +46,22 @@ bool func (int x, int y) {
     if (x == y) {
         x = y;
     }
-}
+    if (x != y) {
+      z = x - y;
+    } else {
+      z = y - x;
+    }
+    ret;
+    ret z;
 
+    while (!z) {
+    z = y;
+    }
+
+    repeat (z == y) {
+    z = x;
+    }
+
+    print << x;  /// comment
+    receive >> z;  ### comment 
+}

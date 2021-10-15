@@ -244,9 +244,37 @@ stmt            ::= assignExp:ae SEMICOLON
                 {:
                   RESULT = new PreDecStmtNode(l);
                 :}
+                | RECEIVE READ loc:l SEMICOLON
+                {:
+                  RESULT = new ReceiveStmtNode(l);
+                :}
+                | PRINT WRITE exp:e SEMICOLON
+                {:
+                  RESULT = new PrintStmtNode(e);
+                :}
                 | IF exp:e LCURLY varDeclList:vdl stmtList:sl RCURLY
                 {:
                   RESULT = new IfStmtNode(e, new DeclListNode(vdl), new StmtListNode(sl));
+                :}
+                | IF exp:e LCURLY varDeclList:vdl1 stmtList:sl1 RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:sl2 RCURLY
+                {:
+                  RESULT = new IfElseStmtNode(e, new DeclListNode(vdl1), new StmtListNode(sl1), new DeclListNode(vdl2), new StmtListNode(sl2));
+                :}
+                | WHILE exp:e LCURLY varDeclList:vdl stmtList:sl RCURLY
+                {:
+                  RESULT = new WhileStmtNode(e, new DeclListNode(vdl), new StmtListNode(sl));
+                :}
+                | REPEAT exp:e LCURLY varDeclList:vdl stmtList:sl RCURLY
+                {:
+                  RESULT = new RepeatStmtNode(e, new DeclListNode(vdl), new StmtListNode(sl));
+                :}
+                | RETURN exp:e SEMICOLON
+                {:
+                  RESULT = new ReturnStmtNode(e);
+                :}
+                | RETURN SEMICOLON
+                {:
+                  RESULT = new ReturnStmtNode(null);
                 :}
                 | fncall:f SEMICOLON
                 {:
