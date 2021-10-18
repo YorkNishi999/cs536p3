@@ -116,13 +116,15 @@ start with program;
  * NOTE: add more grammar rules below
  */
 program         ::= declList: d
-                {: RESULT = new ProgramNode(new DeclListNode(d));
+                {:
+                  RESULT = new ProgramNode(new DeclListNode(d));
                 :}
                 ;
 
 declList        ::= declList:dl decl:d
-                {: dl.addLast(d);
-                   RESULT = dl;
+                {: 
+                  dl.addLast(d);
+                  RESULT = dl;
                 :}
                 | /* epsilon */
                 {: RESULT = new LinkedList<DeclNode>();
@@ -130,7 +132,8 @@ declList        ::= declList:dl decl:d
                 ;
 
 decl            ::= varDecl:v
-                {: RESULT = v;
+                {: 
+                  RESULT = v;
                 :}
                 | fnDecl:f
                 {:
@@ -154,7 +157,8 @@ varDeclList     ::= varDeclList:vdl varDecl:vd
                 ;
 
 varDecl         ::= type:t id:i SEMICOLON
-                {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
+                {: 
+                  RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
                 :}
                 | STRUCT id:i1 id:i2 SEMICOLON
                 {:
@@ -432,6 +436,7 @@ loc             ::= id:i
                 ;
 
 id              ::= ID:i
-                {: RESULT = new IdNode(i.linenum, i.charnum, i.idVal);
+                {:
+                  RESULT = new IdNode(i.linenum, i.charnum, i.idVal);
                 :}
                 ;

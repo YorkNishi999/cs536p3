@@ -318,7 +318,7 @@ class StructDeclNode extends DeclNode {
       myId.unparse(p, indent);
       p.println(" {");
       myDeclList.unparse(p, indent + 4);
-      p.println("};");
+      p.println("}");
   }
 
   // 2 kids
@@ -369,8 +369,8 @@ class StructNode extends TypeNode {
         p.print("struct ");
         myId.unparse(p, indent);
     }
-	
-	// 1 kid
+  
+  // 1 kid
     private IdNode myId;
 }
 
@@ -431,7 +431,7 @@ class ReceiveStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("recieve >> ");
+        p.print("receive >> ");
         myExp.unparse(p, indent);
         p.println(";");
     }

@@ -1,3 +1,24 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Title: This program calls the parser, then for a successful parse, calls 
+//        the unparser.
+// Files: P3.java, ErrMsg.java,ast.java, b.cup, b.jlex, g.grammar, Makefile
+// Test files: test,b
+// Folders: deps
+// Semester: CS536 Intro to PLs and compilers, Fall 2021
+// Author: Yohei Nishimura
+// Email: ynishimura@wisc.edu
+// CS Login: yohei_nishimura111
+// Lecturer's Name: Aws Albarghouthi
+//////////////////////////////////80 letters////////////////////////////////////
+
+/**
+ * This program calls the parser, then for a successful parse, calls 
+ * the unparser.
+ * P3 takes test.b and test.out as arguments.
+ * For details on each method, please refer to the documentation of each class.
+ */
+
 import java.io.*;
 import java_cup.runtime.*;
 
