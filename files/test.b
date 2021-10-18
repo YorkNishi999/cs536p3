@@ -1,5 +1,9 @@
 int x;
 int y;
+void z;
+bool w;
+bool w1;
+int x1_1;
 struct struct_a sa1;
 struct struct_b {
     int x;
@@ -43,7 +47,11 @@ bool func (int x, int y) {
     --x;
     x = 151;
     y = "string";
-    if (x == y) {
+    x = 151 + y * z / !x - -z;
+    if (x == tru) {
+        x = y.z;
+    }
+    if (x == fls) {
         x = y;
     }
     if (x != y) {
@@ -56,6 +64,8 @@ bool func (int x, int y) {
 
     while (!z) {
     z = y;
+    ++z;
+    --z;
     }
 
     repeat (z == y) {

@@ -677,7 +677,7 @@ class DotAccessExpNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print(")");
+        p.print("(");
         myLoc.unparse(p, indent);
         p.print(".");
         myId.unparse(p, indent);
@@ -764,6 +764,9 @@ class UnaryMinusNode extends UnaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+		    p.print("(-");
+				myExp.unparse(p, indent);
+		    p.print(")");
     }
 }
 
@@ -773,8 +776,9 @@ class NotNode extends UnaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-        p.print("!");
+        p.print("(!");
         myExp.unparse(p, indent);
+        p.print(")");
     }
 }
 

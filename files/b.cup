@@ -105,7 +105,7 @@ precedence left AND;
 precedence nonassoc LESS, LESSEQ, GREATER, GREATEREQ, EQUALS, NOTEQUALS;
 precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE;
-precedence left NOT, MINUS;
+precedence left NOT;
 /* im not sure: precedence left PLUSPLUS, MINUSMINUS; */
 
 start with program;
