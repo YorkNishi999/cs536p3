@@ -12,3 +12,6 @@ Warning : Terminal "WHILE" was declared but never used
 Warning : Terminal "STRINGLITERAL" was declared but never used
 Warning : Terminal "PRINT" was declared but never used
 
+
+test
+
